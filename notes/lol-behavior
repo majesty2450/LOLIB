@@ -1,0 +1,52 @@
+Here we will go over all known possibilities for implementing the desired
+behavior. Observations of what league does will be recorded for each instance,
+these results will be used to determine what will be actually used to implement
+lolib.
+
+We know that data regarding input bindings appears in both "input.ini" and
+"PersistedSettings.json" within the "Config" directory. What happens to both
+the files and the currently set bindings when:
+
+	We change the settings in-game during the game.
+		Both "input.ini" and "PersistedSettings.json" are updated
+		immediately to the bindings set in-game.
+	We restore the default settings during the game.
+		Both "input.ini" and "PersistedSettings.json" are updated
+		to un-related defaults that appear in-game.
+	We change the settings out-of-game during the game.
+		The settings in the game do not change, however the settings
+		out of game change.
+	We start the game with different settings in both files.
+		The settings in game take those of "PersistedSettings.json"
+		over "input.ini".
+	We start the game with no "PersistedSettings.json".
+		A "PersistedSettings.json" file is created and takes the
+		settings from "input.ini".
+	We start the game with no "input.ini".
+		File is _not_ created, unless settings are changed in-game.
+	We start the game with neither files.
+		A "PersistedSettings.json" file is created with no input
+		settings. The game uses the default settings. If settings
+		are changed in-game, the file has the settings that are
+		changed only in the file.
+
+Based off of the above observations there appears to be a few ways of
+implementing the desired behavior:
+
+	One can delete the "PersistedSettings.json" file and change the
+	"input.ini" file before the game starts.
+		The file is generated using any other config files, it
+		contains the data from those files, when the game starts
+		so deletion is a non-problem.
+		"input.ini" appears to be an easier format.
+
+	One can change the "PersistedSettings.json" file before the game
+	starts.
+		"Editing it is not recommended." Appears in this file, and
+		the fact it is automatically generated means alternative
+		options should be explored.
+
+Based off of the given, one should delete the "PersistedSettings.json" file
+and change the "input.ini" file before the game starts. One can store the
+settings in separate "input.ini" files that can be switched and changed or
+one can store all of the data in another format.
