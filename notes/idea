@@ -1,0 +1,112 @@
+
+Right now if one wants to set their key-bindings they have to go into a
+custom game and use the system interface to test and set those bindings.
+It would be much better to be able to set these bindings outside of a
+custom game, although doing so in a custom allows testing.
+
+Right now if one wants to change their binding setup for the champion
+they are using they must wait for the game to start and then change the
+bindings during the game. These bindings will save for later games and
+require changing back after the game. These binding could take awhile to
+change and would have to be changed every time you have custom bindings.
+It would be much better to change the settings to pre-configured settings
+that have been saved, similar to selecting masteries, runes, item-sets,
+etc...
+
+How? All key-bindings by default are stored in "input.ini" and
+"PersistedSettings.json". The "input.ini" file contains all of the
+settings set by the user, however, the "PersistedSettings.json" contains
+all of the settings that are being used currently. When the user changes
+settings in-game they are saved to input and persisted, but persisted is
+used.
+
+How? Well after some testing it appears you cannot change key bindings
+externally when the game is running, so therefore one must select them
+before it starts, during champion selection. It should be noted that if
+one were to change at this time only the "PersistedSettings.json" file
+would be re-loaded by the game and therefore that one must be changed.
+
+How? When one selects the set to use the "PersistedSettings.json" file is
+overwritten, this allows the file to be loaded for use before the game
+starts.
+
+How? A third party app can be used to create a json file for key-binding
+sets and save/load them to/from:
+   "Champion/[Champion]/Recommended/[AppName]_KeyBindingsSet_[#].json"
+It could also take the current settings of the game and save them under
+a name for saving settings defined and edited in-game.
+
+"PersistedSettings" VS "SettingsToPersist"
+   It is known to work with PersistedSettings, however if one looks
+   within the file they notice a description that says editing is not
+   recommended... Where is this other file mentioned? Can it be used for
+   in-game editing or simplifying what is required?
+
+
+PROTOTYPE:
+   Command Line:
+      Preference Options: (Passively effect actions)
+         --directory
+            Specify directory of league.
+         --verbose
+            Displays details of the process.
+         --quiet --silent [name]
+            Suppresses all warnings or all instances of the given warning.
+         --no-splash
+            Hides splash at start.
+
+      Action Options: (Does something)
+         --version
+            Displays the current version.
+         --help [topic]
+            Displays help info on the program or given topic.
+
+         -p -prefer [use,keep,delete] (000,001,010,100,111,110,101,011)
+            Manages saved preference options and/or displays them.
+         -c --command [bind|save|edit|copy|show|list]
+            Declares the command to use or picks based name count, either
+            bind for 1 or copy for 2. Limited to one command.
+               bind
+                  Changes the bindings to the set with the first name.
+                  Throws a warning if there are more than one names, uses
+                  the first one.
+                  Throws a warning if there are no names, uses declares a
+                  name with 'default'.
+               save
+                  Changes the set 'recovery' to the set with the first name.
+                  Changes the set with the first name using the bindings.
+                  Throws a warning if there are more than one names, uses
+                  the first.
+                  Throws a warning if there are no names, declares a name
+                  with 'default'.
+               edit
+                  Changes the set 'recovery' to the set with the first name.
+                  Changes the set with the first name.
+                  Throws a warning if there are more than one names, uses
+                  the first.
+                  Throws a warning if there are no names, declares a name
+                  with default.
+               copy
+                  Changes the set 'recovery' to the set with the first name.
+                  Changes the set with the first name using another set.
+                  Throws a warning if there are more than two names, uses
+                  the first two.
+                  Throws a warning if there is only one name, declares a
+                  name with 'default'.
+                  Throws an error if there are no names.
+               show
+                  Displays all sets with the given names.
+               list
+                  Displays a list of all saved sets, ignores all data
+                  options.
+
+      Data Options: (Actively effect actions)
+         -s -set [...]
+            Declares a set name.
+            Throws an error if set with name does not exist.
+         -d -difference [...]
+            Declares a binding difference.
+            Throws an error if the binding doesn't exist.
+         -v -value [...]
+            Declares a binding value.
+            Throws an error if the value isn't supported.
