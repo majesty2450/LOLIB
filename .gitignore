@@ -1,0 +1,6 @@
+# All CMake/Project/Build files that aren't "CMakeLists.txt"
+build/
+
+# All binaries
+bin/
+lib/
